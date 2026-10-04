@@ -1,0 +1,79 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="IBSaveConverter.App"
+             RequestedThemeVariant="Dark">
+
+  <Application.Resources>
+    <SolidColorBrush x:Key="CardBackground" Color="#1E2228" />
+    <SolidColorBrush x:Key="CardBorder" Color="#2F353D" />
+    <SolidColorBrush x:Key="MutedText" Color="#9AA3AD" />
+    <SolidColorBrush x:Key="StepText" Color="#E8B44C" />
+    <SolidColorBrush x:Key="SuccessBackground" Color="#173524" />
+    <SolidColorBrush x:Key="SuccessBorder" Color="#2E7D4F" />
+    <SolidColorBrush x:Key="ErrorBackground" Color="#3A1C1F" />
+    <SolidColorBrush x:Key="ErrorBorder" Color="#A3434B" />
+    <SolidColorBrush x:Key="InfoBackground" Color="#1C2733" />
+    <SolidColorBrush x:Key="InfoBorder" Color="#35506B" />
+    <SolidColorBrush x:Key="WarningText" Color="#F0B861" />
+    <FontFamily x:Key="MonoFont">Cascadia Mono,Consolas,Menlo,DejaVu Sans Mono,monospace</FontFamily>
+  </Application.Resources>
+
+  <Application.Styles>
+    <FluentTheme />
+
+    <Style Selector="TextBlock.title">
+      <Setter Property="FontSize" Value="22" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="TextBlock.muted">
+      <Setter Property="Foreground" Value="{StaticResource MutedText}" />
+      <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style Selector="TextBlock.step">
+      <Setter Property="FontSize" Value="13" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Foreground" Value="{StaticResource StepText}" />
+      <Setter Property="Margin" Value="0,0,0,2" />
+    </Style>
+    <Style Selector="TextBlock.warning">
+      <Setter Property="Foreground" Value="{StaticResource WarningText}" />
+      <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style Selector="TextBlock.mono">
+      <Setter Property="FontFamily" Value="{StaticResource MonoFont}" />
+    </Style>
+
+    <!-- Steps that aren't unlocked yet are dimmed. -->
+    <Style Selector="Border.card:disabled">
+      <Setter Property="Opacity" Value="0.4" />
+    </Style>
+    <Style Selector="Border.card">
+      <Setter Property="Background" Value="{StaticResource CardBackground}" />
+      <Setter Property="BorderBrush" Value="{StaticResource CardBorder}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Padding" Value="16,14" />
+    </Style>
+
+    <Style Selector="Border.status">
+      <Setter Property="Background" Value="{StaticResource InfoBackground}" />
+      <Setter Property="BorderBrush" Value="{StaticResource InfoBorder}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="6" />
+      <Setter Property="Padding" Value="12,8" />
+    </Style>
+    <Style Selector="Border.status.success">
+      <Setter Property="Background" Value="{StaticResource SuccessBackground}" />
+      <Setter Property="BorderBrush" Value="{StaticResource SuccessBorder}" />
+    </Style>
+    <Style Selector="Border.status.error">
+      <Setter Property="Background" Value="{StaticResource ErrorBackground}" />
+      <Setter Property="BorderBrush" Value="{StaticResource ErrorBorder}" />
+    </Style>
+
+    <Style Selector="Button.big">
+      <Setter Property="Padding" Value="22,9" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+  </Application.Styles>
+</Application>
