@@ -1,0 +1,15 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="IBSaveConverter.Views.ConfirmDialog"
+        Width="440" SizeToContent="Height" CanResize="False"
+        Background="{StaticResource Steel}"
+        WindowStartupLocation="CenterOwner" ShowInTaskbar="False">
+  <StackPanel Margin="24" Spacing="12">
+    <TextBlock x:Name="TitleText" Classes="heading" TextWrapping="Wrap" />
+    <TextBlock x:Name="MessageText" Classes="muted" />
+    <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right" Margin="0,12,0,0">
+      <Button Content="Cancel" Click="OnCancel" IsCancel="True" IsDefault="True" />
+      <Button x:Name="ConfirmButton" Classes="accent" Click="OnConfirm" />
+    </StackPanel>
+  </StackPanel>
+</Window>

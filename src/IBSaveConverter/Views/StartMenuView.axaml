@@ -1,0 +1,118 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:IBSaveConverter.ViewModels"
+             xmlns:conv="using:IBSaveConverter.Views.Converters"
+             x:Class="IBSaveConverter.Views.StartMenuView"
+             x:DataType="vm:StartMenuViewModel">
+
+  <UserControl.Styles>
+    <!-- The one bold moment: each game icon lifts and glows like a blade in the forge when pointed at. -->
+    <Style Selector="Button.game">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Padding" Value="16,16,16,20" />
+      <Setter Property="CornerRadius" Value="16" />
+      <Setter Property="Cursor" Value="Hand" />
+      <!-- Keyboard focus shows as the same glow as hover. -->
+      <Setter Property="FocusAdorner" Value="{x:Null}" />
+    </Style>
+    <Style Selector="Button.game:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="Button.game:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="Button.game Border.icon">
+      <Setter Property="CornerRadius" Value="32" />
+      <Setter Property="ClipToBounds" Value="True" />
+    </Style>
+    <Style Selector="Button.game Border.glow">
+      <Setter Property="CornerRadius" Value="32" />
+      <Setter Property="BoxShadow" Value="0 8 24 -12 #00E50000, 0 2 6 0 #66000000" />
+      <Setter Property="RenderTransform" Value="scale(1)" />
+      <Setter Property="Transitions">
+        <Transitions>
+          <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.25" Easing="CubicEaseOut" />
+          <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.25" Easing="CubicEaseOut" />
+        </Transitions>
+      </Setter>
+    </Style>
+    <Style Selector="Button.game:pointerover Border.glow, Button.game:focus-visible Border.glow">
+      <Setter Property="BoxShadow" Value="0 14 44 -6 #B3E50000, 0 2 6 0 #66000000" />
+      <Setter Property="RenderTransform" Value="scale(1.04)" />
+    </Style>
+    <Style Selector="Button.game:pressed Border.glow">
+      <Setter Property="RenderTransform" Value="scale(0.98)" />
+    </Style>
+    <Style Selector="Button.game TextBlock.gameName">
+      <Setter Property="Foreground" Value="{StaticResource MutedText}" />
+      <Setter Property="Transitions">
+        <Transitions>
+          <BrushTransition Property="Foreground" Duration="0:0:0.2" />
+        </Transitions>
+      </Setter>
+    </Style>
+    <Style Selector="Button.game:pointerover TextBlock.gameName, Button.game:focus-visible TextBlock.gameName">
+      <Setter Property="Foreground" Value="{StaticResource Silver}" />
+    </Style>
+
+    <!-- Opening the app: the title, then the games, rise into place once. -->
+    <Style Selector="StackPanel.intro">
+      <Style.Animations>
+        <Animation Duration="0:0:0.45" Easing="CubicEaseOut" FillMode="Backward">
+          <KeyFrame Cue="0%">
+            <Setter Property="Opacity" Value="0" />
+            <Setter Property="TranslateTransform.Y" Value="12" />
+          </KeyFrame>
+          <KeyFrame Cue="100%">
+            <Setter Property="Opacity" Value="1" />
+            <Setter Property="TranslateTransform.Y" Value="0" />
+          </KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+    <Style Selector="ItemsControl.intro">
+      <Style.Animations>
+        <Animation Duration="0:0:0.45" Delay="0:0:0.12" Easing="CubicEaseOut" FillMode="Backward">
+          <KeyFrame Cue="0%">
+            <Setter Property="Opacity" Value="0" />
+            <Setter Property="TranslateTransform.Y" Value="16" />
+          </KeyFrame>
+          <KeyFrame Cue="100%">
+            <Setter Property="Opacity" Value="1" />
+            <Setter Property="TranslateTransform.Y" Value="0" />
+          </KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+  </UserControl.Styles>
+
+  <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="32">
+    <StackPanel Classes="intro" HorizontalAlignment="Center" Spacing="4">
+      <TextBlock Classes="display" Text="Infinity Blade" HorizontalAlignment="Center" />
+      <TextBlock Classes="muted" FontSize="16" Text="Save Converter" HorizontalAlignment="Center" />
+      <TextBlock Classes="muted" Text="Which game are your characters from?" HorizontalAlignment="Center" Margin="0,40,0,0" />
+    </StackPanel>
+
+    <ItemsControl Classes="intro" ItemsSource="{Binding Games}" HorizontalAlignment="Center" Margin="0,16,0,0">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel Orientation="Horizontal" Spacing="24" />
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate x:DataType="vm:GameChoice">
+          <Button Classes="game" Command="{Binding OpenCommand}">
+            <StackPanel Spacing="16">
+              <Border Classes="glow" Width="144" Height="144">
+                <Border Classes="icon">
+                  <Image Source="{Binding Page.IconPath, Converter={x:Static conv:AssetImageConverter.Instance}}" />
+                </Border>
+              </Border>
+              <TextBlock Classes="gameName" Text="{Binding Page.Title}" HorizontalAlignment="Center" />
+            </StackPanel>
+          </Button>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </StackPanel>
+</UserControl>

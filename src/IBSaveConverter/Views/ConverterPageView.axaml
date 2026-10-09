@@ -1,0 +1,143 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:IBSaveConverter.ViewModels"
+             xmlns:src="using:IBSaveConverter.ViewModels.Sources"
+             xmlns:dst="using:IBSaveConverter.ViewModels.Destinations"
+             xmlns:srcv="using:IBSaveConverter.Views.Sources"
+             xmlns:dstv="using:IBSaveConverter.Views.Destinations"
+             xmlns:conv="using:IBSaveConverter.Views.Converters"
+             x:Class="IBSaveConverter.Views.ConverterPageView"
+             x:DataType="vm:ConverterPageViewModel">
+
+  <UserControl.DataTemplates>
+    <DataTemplate DataType="src:PcSourceViewModel"><srcv:PcSourceView /></DataTemplate>
+    <DataTemplate DataType="src:AndroidSourceViewModel"><srcv:AndroidSourceView /></DataTemplate>
+    <DataTemplate DataType="src:IosSourceViewModel"><srcv:IosSourceView /></DataTemplate>
+    <DataTemplate DataType="src:SaveFileSourceViewModel"><srcv:SaveFileSourceView /></DataTemplate>
+    <DataTemplate DataType="dst:PcDestinationViewModel"><dstv:PcDestinationView /></DataTemplate>
+    <DataTemplate DataType="dst:AndroidDestinationViewModel"><dstv:AndroidDestinationView /></DataTemplate>
+    <DataTemplate DataType="dst:IosDestinationViewModel"><dstv:IosDestinationView /></DataTemplate>
+
+    <DataTemplate DataType="vm:TargetSlotItem">
+      <TextBlock Text="{Binding Label}" />
+    </DataTemplate>
+    <!-- One row of a "will have" preview. -->
+    <DataTemplate DataType="vm:PlannedSlot">
+      <Grid ColumnDefinitions="56,*,Auto" Margin="0,6">
+        <TextBlock Grid.Column="0" Text="{Binding Title}" Classes="muted" VerticalAlignment="Center" />
+        <StackPanel Grid.Column="1" Spacing="2">
+          <TextBlock Text="{Binding Name}" Classes="strong" />
+          <TextBlock Text="{Binding Detail}" Classes="hint" />
+        </StackPanel>
+        <TextBlock Grid.Column="2" Text="{Binding Origin}" Classes="hint" Classes.new="{Binding IsNew}"
+                   VerticalAlignment="Center" Margin="16,0,0,0" />
+      </Grid>
+    </DataTemplate>
+  </UserControl.DataTemplates>
+
+  <DockPanel>
+    <!-- Header: back to the games, and which game this is. Esc goes back too. -->
+    <Grid DockPanel.Dock="Top" Margin="24,24,32,16" ColumnDefinitions="Auto,Auto,*">
+      <Button Grid.Column="0" Classes="ghost" Content="‹  Games" HotKey="Escape" VerticalAlignment="Center" Margin="0,0,16,0"
+              Command="{Binding $parent[Window].((vm:ShellViewModel)DataContext).BackCommand}" />
+      <Border Grid.Column="1" Width="48" Height="48" CornerRadius="11" ClipToBounds="True" Margin="0,0,16,0" VerticalAlignment="Center">
+        <Image Source="{Binding IconPath, Converter={x:Static conv:AssetImageConverter.Instance}}" />
+      </Border>
+      <StackPanel Grid.Column="2" Spacing="2" VerticalAlignment="Center">
+        <TextBlock Classes="pageTitle" Text="{Binding Title}" />
+        <TextBlock Classes="muted" Text="{Binding Subtitle}" />
+      </StackPanel>
+    </Grid>
+
+    <!-- Footer: the result of the last run and the actions. -->
+    <Border DockPanel.Dock="Bottom" Background="{StaticResource Steel}" BorderBrush="{StaticResource SteelLine}"
+            BorderThickness="0,1,0,0" Padding="32,16">
+      <StackPanel Spacing="12">
+        <Border Classes="status" Classes.success="{Binding Status.IsSuccess}" Classes.error="{Binding Status.IsError}"
+                IsVisible="{Binding Status.IsVisible}">
+          <TextBlock Text="{Binding Status.Text}" TextWrapping="Wrap" />
+        </Border>
+        <Grid ColumnDefinitions="*,Auto,Auto">
+          <ProgressBar Grid.Column="0" IsIndeterminate="True" IsVisible="{Binding IsWorking}" VerticalAlignment="Center" Margin="0,0,24,0" />
+          <Button Grid.Column="1" Content="{Binding Destination.RevealText}" Command="{Binding RevealResultCommand}" Margin="0,0,8,0" MinHeight="40" />
+          <Button Grid.Column="2" Classes="accent primary" Content="{Binding Destination.ActionText}" Command="{Binding ConvertCommand}" />
+        </Grid>
+      </StackPanel>
+    </Border>
+
+    <ScrollViewer>
+      <StackPanel Margin="32,0,32,24" Spacing="16" IsEnabled="{Binding IsIdle}">
+
+        <Border Classes="card">
+          <StackPanel Spacing="16">
+            <TextBlock Classes="heading" Text="Bring characters from" />
+            <Border Classes="segments">
+              <StackPanel Orientation="Horizontal" Spacing="4">
+                <RadioButton Classes="segment" GroupName="source" Content="PC" IsChecked="{Binding IsPcSource}" />
+                <RadioButton Classes="segment" GroupName="source" Content="Android" IsChecked="{Binding IsAndroidSource}" />
+                <RadioButton Classes="segment" GroupName="source" Content="iOS" IsChecked="{Binding IsIosSource}" IsVisible="{Binding HasIos}" />
+                <RadioButton Classes="segment" GroupName="source" Content="Save file" IsChecked="{Binding IsSaveFileSource}" />
+              </StackPanel>
+            </Border>
+            <ContentControl Content="{Binding Source}" />
+            <TextBlock Classes="warning" Text="{Binding Source.Note}" IsVisible="{Binding Source.HasNote}" />
+            <Button Classes="ghost small" Content="Export decrypted copy…" Command="{Binding Source.ExportCommand}"
+                    IsVisible="{Binding Source.CanExport}" HorizontalAlignment="Left" Margin="-10,-8,0,0" />
+          </StackPanel>
+        </Border>
+
+        <Border Classes="card" IsEnabled="{Binding CanPickCharacters}">
+          <StackPanel Spacing="12">
+            <TextBlock Classes="heading" Text="Characters" />
+            <TextBlock Classes="muted" Text="The characters show up here once the save above is read." IsVisible="{Binding !HasCharacters}" />
+            <ItemsControl ItemsSource="{Binding Characters}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate><StackPanel Spacing="4" /></ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:CharacterItem">
+                  <CheckBox Classes="choice" IsChecked="{Binding IsChecked}" IsEnabled="{Binding IsSelectable}">
+                    <Grid ColumnDefinitions="56,*,Auto,Auto">
+                      <TextBlock Grid.Column="0" Text="{Binding Title}" Classes="muted" VerticalAlignment="Center" />
+                      <StackPanel Grid.Column="1" Spacing="2">
+                        <TextBlock Text="{Binding Name}" Classes="strong" />
+                        <TextBlock Text="{Binding Detail}" Classes="hint" />
+                      </StackPanel>
+                      <Border Grid.Column="2" Classes="badge" IsVisible="{Binding HasBadge}" VerticalAlignment="Center" Margin="8,0,0,0">
+                        <TextBlock Text="{Binding Badge}" FontSize="12" />
+                      </Border>
+                      <Button Grid.Column="3" Classes="ghost small" Content="Remove" IsVisible="{Binding CanRemove}"
+                              Command="{Binding RemoveCommand}" Margin="8,0,0,0" VerticalAlignment="Center" />
+                    </Grid>
+                  </CheckBox>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+
+        <Border Classes="card" IsEnabled="{Binding AreCharactersPicked}">
+          <StackPanel Spacing="16">
+            <TextBlock Classes="heading" Text="Send them to" />
+            <Border Classes="segments">
+              <StackPanel Orientation="Horizontal" Spacing="4">
+                <RadioButton Classes="segment" GroupName="destination" Content="PC" IsChecked="{Binding IsPcDestination}" IsEnabled="{Binding CanSendToPc}" />
+                <RadioButton Classes="segment" GroupName="destination" Content="Android" IsChecked="{Binding IsAndroidDestination}" IsEnabled="{Binding CanSendToAndroid}" />
+                <RadioButton Classes="segment" GroupName="destination" Content="iOS" IsChecked="{Binding IsIosDestination}" IsEnabled="{Binding CanSendToIos}" IsVisible="{Binding HasIos}" />
+              </StackPanel>
+            </Border>
+            <ContentControl Content="{Binding Destination}" />
+            <Border Classes="inset" IsVisible="{Binding Destination.HasPlan}">
+              <StackPanel Spacing="4">
+                <TextBlock Text="{Binding Destination.PlanTitle}" Classes="strong" Margin="0,0,0,4" />
+                <ItemsControl ItemsSource="{Binding Destination.Plan}" />
+              </StackPanel>
+            </Border>
+            <TextBlock Classes="warning" Text="{Binding Destination.Warning}" IsVisible="{Binding Destination.HasWarning}" />
+          </StackPanel>
+        </Border>
+
+      </StackPanel>
+    </ScrollViewer>
+  </DockPanel>
+</UserControl>

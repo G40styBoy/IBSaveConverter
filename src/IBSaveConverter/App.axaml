@@ -1,0 +1,423 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="IBSaveConverter.App"
+             RequestedThemeVariant="Dark">
+
+  <!--
+    Look: steel and crimson, from the game icons (a silver sword on red).
+    Color follows 60-30-10: Iron for the window (60%), Steel for panels (30%), Crimson only for the main action
+    and for what is selected (10%). Ember (the IB2 flame) marks new characters. Neutrals are tinted blue like steel.
+    Type: Cinzel (close to the Infinity Blade lettering) for big titles only; Inter for everything else.
+    Sizes 12 / 14 / 16 / 24 / 40. Spacing in steps of 4 and 8.
+  -->
+  <Application.Resources>
+    <Color x:Key="IronColor">#121519</Color>
+    <Color x:Key="CrimsonColor">#C70402</Color>
+
+    <SolidColorBrush x:Key="Iron" Color="{StaticResource IronColor}" />
+    <SolidColorBrush x:Key="Steel" Color="#1A1F26" />
+    <SolidColorBrush x:Key="SteelRaised" Color="#252C35" />
+    <SolidColorBrush x:Key="SteelHover" Color="#1D2229" />
+    <SolidColorBrush x:Key="SteelLine" Color="#2B333D" />
+    <SolidColorBrush x:Key="SteelLineStrong" Color="#3A4450" />
+    <SolidColorBrush x:Key="Inset" Color="#0D1014" />
+    <SolidColorBrush x:Key="Silver" Color="#E7EAEE" />
+    <SolidColorBrush x:Key="MutedText" Color="#98A2AE" />
+    <SolidColorBrush x:Key="FaintText" Color="#6B7480" />
+    <SolidColorBrush x:Key="MarkBorder" Color="#56616E" />
+    <SolidColorBrush x:Key="Crimson" Color="{StaticResource CrimsonColor}" />
+    <SolidColorBrush x:Key="CrimsonHover" Color="#E50000" />
+    <SolidColorBrush x:Key="CrimsonPressed" Color="#9E0302" />
+    <SolidColorBrush x:Key="Ember" Color="#FD7B03" />
+    <SolidColorBrush x:Key="WarningText" Color="#F0B861" />
+    <SolidColorBrush x:Key="SuccessBackground" Color="#10261C" />
+    <SolidColorBrush x:Key="SuccessBorder" Color="#2E7D4F" />
+    <SolidColorBrush x:Key="ErrorBackground" Color="#2C0D0F" />
+
+    <FontFamily x:Key="DisplayFont">avares://IBSaveConverter/Assets/Fonts#Cinzel</FontFamily>
+    <FontFamily x:Key="MonoFont">Cascadia Mono,Consolas,Menlo,DejaVu Sans Mono,monospace</FontFamily>
+
+    <!-- Fluent control colors, moved onto the steel palette. -->
+    <SolidColorBrush x:Key="ButtonBackground" Color="#252C35" />
+    <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#2E3640" />
+    <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#1E242B" />
+    <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="#1F252D" />
+    <SolidColorBrush x:Key="ButtonForeground" Color="#E7EAEE" />
+    <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="ButtonForegroundPressed" Color="#C9CED5" />
+    <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="#5C6570" />
+    <SolidColorBrush x:Key="ButtonBorderBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent" />
+    <SolidColorBrush x:Key="ButtonBorderBrushPressed" Color="Transparent" />
+    <SolidColorBrush x:Key="ButtonBorderBrushDisabled" Color="Transparent" />
+
+    <SolidColorBrush x:Key="AccentButtonBackground" Color="#C70402" />
+    <SolidColorBrush x:Key="AccentButtonBackgroundPointerOver" Color="#E50000" />
+    <SolidColorBrush x:Key="AccentButtonBackgroundPressed" Color="#9E0302" />
+    <SolidColorBrush x:Key="AccentButtonBackgroundDisabled" Color="#252C35" />
+    <SolidColorBrush x:Key="AccentButtonForeground" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="AccentButtonForegroundPointerOver" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="AccentButtonForegroundPressed" Color="#F2D9D9" />
+    <SolidColorBrush x:Key="AccentButtonForegroundDisabled" Color="#5C6570" />
+    <SolidColorBrush x:Key="AccentButtonBorderBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="AccentButtonBorderBrushPointerOver" Color="Transparent" />
+    <SolidColorBrush x:Key="AccentButtonBorderBrushPressed" Color="Transparent" />
+    <SolidColorBrush x:Key="AccentButtonBorderBrushDisabled" Color="Transparent" />
+
+    <SolidColorBrush x:Key="TextControlBackground" Color="#0D1014" />
+    <SolidColorBrush x:Key="TextControlBackgroundPointerOver" Color="#0D1014" />
+    <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="#0D1014" />
+    <SolidColorBrush x:Key="TextControlBackgroundDisabled" Color="#15191E" />
+    <SolidColorBrush x:Key="TextControlBorderBrush" Color="#2B333D" />
+    <SolidColorBrush x:Key="TextControlBorderBrushPointerOver" Color="#3A4450" />
+    <SolidColorBrush x:Key="TextControlBorderBrushFocused" Color="#C70402" />
+    <SolidColorBrush x:Key="TextControlForeground" Color="#E7EAEE" />
+    <SolidColorBrush x:Key="TextControlForegroundPointerOver" Color="#E7EAEE" />
+    <SolidColorBrush x:Key="TextControlForegroundFocused" Color="#E7EAEE" />
+    <SolidColorBrush x:Key="TextControlPlaceholderForeground" Color="#6B7480" />
+    <SolidColorBrush x:Key="TextControlPlaceholderForegroundPointerOver" Color="#6B7480" />
+    <SolidColorBrush x:Key="TextControlPlaceholderForegroundFocused" Color="#6B7480" />
+    <SolidColorBrush x:Key="TextControlSelectionHighlightColor" Color="#8A1412" />
+
+    <SolidColorBrush x:Key="ComboBoxBackground" Color="#0D1014" />
+    <SolidColorBrush x:Key="ComboBoxBackgroundPointerOver" Color="#0D1014" />
+    <SolidColorBrush x:Key="ComboBoxBackgroundPressed" Color="#0D1014" />
+    <SolidColorBrush x:Key="ComboBoxBorderBrush" Color="#2B333D" />
+    <SolidColorBrush x:Key="ComboBoxBorderBrushPointerOver" Color="#3A4450" />
+    <SolidColorBrush x:Key="ComboBoxBorderBrushPressed" Color="#3A4450" />
+    <SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="#1A1F26" />
+    <SolidColorBrush x:Key="ComboBoxDropDownBorderBrush" Color="#2B333D" />
+    <SolidColorBrush x:Key="ComboBoxItemBackgroundPointerOver" Color="#252C35" />
+    <SolidColorBrush x:Key="ComboBoxItemBackgroundSelected" Color="#2E3640" />
+    <SolidColorBrush x:Key="ComboBoxItemBackgroundSelectedPointerOver" Color="#36404B" />
+  </Application.Resources>
+
+  <Application.Styles>
+    <FluentTheme>
+      <FluentTheme.Palettes>
+        <ColorPaletteResources x:Key="Dark" Accent="#C70402" RegionColor="#121519" BaseHigh="#E7EAEE" />
+      </FluentTheme.Palettes>
+    </FluentTheme>
+
+    <!-- ===== Text ===== -->
+    <Style Selector="TextBlock.display">
+      <Setter Property="FontFamily" Value="{StaticResource DisplayFont}" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="FontSize" Value="40" />
+      <Setter Property="Foreground" Value="{StaticResource Silver}" />
+    </Style>
+    <Style Selector="TextBlock.pageTitle">
+      <Setter Property="FontFamily" Value="{StaticResource DisplayFont}" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="FontSize" Value="24" />
+      <Setter Property="Foreground" Value="{StaticResource Silver}" />
+    </Style>
+    <Style Selector="TextBlock.gameName">
+      <Setter Property="FontFamily" Value="{StaticResource DisplayFont}" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="FontSize" Value="16" />
+      <Setter Property="Foreground" Value="{StaticResource Silver}" />
+    </Style>
+    <Style Selector="TextBlock.heading">
+      <Setter Property="FontSize" Value="16" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Foreground" Value="{StaticResource Silver}" />
+    </Style>
+    <Style Selector="TextBlock.strong">
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="TextBlock.muted">
+      <Setter Property="Foreground" Value="{StaticResource MutedText}" />
+      <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style Selector="TextBlock.hint">
+      <Setter Property="Foreground" Value="{StaticResource MutedText}" />
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style Selector="TextBlock.warning">
+      <Setter Property="Foreground" Value="{StaticResource WarningText}" />
+      <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style Selector="TextBlock.new">
+      <Setter Property="Foreground" Value="{StaticResource Ember}" />
+    </Style>
+    <Style Selector=":is(TextBlock).mono">
+      <Setter Property="FontFamily" Value="{StaticResource MonoFont}" />
+    </Style>
+    <Style Selector="TextBox.mono">
+      <Setter Property="FontFamily" Value="{StaticResource MonoFont}" />
+    </Style>
+
+    <!-- Keyboard focus: a crimson ring that follows the control's corners. -->
+    <Style Selector="Button, ComboBox, SelectableTextBlock">
+      <Setter Property="FocusAdorner">
+        <FocusAdornerTemplate>
+          <Border BorderThickness="2" BorderBrush="{StaticResource Crimson}" CornerRadius="8" Margin="-3" />
+        </FocusAdornerTemplate>
+      </Setter>
+    </Style>
+
+    <!-- ===== Inputs and buttons share one height and corner ===== -->
+    <Style Selector="TextBox">
+      <Setter Property="CornerRadius" Value="6" />
+      <Setter Property="Padding" Value="10,7" />
+      <Setter Property="MinHeight" Value="36" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="ComboBox">
+      <Setter Property="CornerRadius" Value="6" />
+      <Setter Property="MinHeight" Value="36" />
+    </Style>
+    <Style Selector="Button">
+      <Setter Property="CornerRadius" Value="6" />
+      <Setter Property="Padding" Value="14,0" />
+      <Setter Property="MinHeight" Value="36" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button.primary">
+      <Setter Property="Padding" Value="24,0" />
+      <Setter Property="MinHeight" Value="40" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <!-- Small secondary actions inside a panel: Export, Copy, Remove. -->
+    <Style Selector="Button.small">
+      <Setter Property="Padding" Value="10,0" />
+      <Setter Property="MinHeight" Value="28" />
+      <Setter Property="FontSize" Value="12" />
+    </Style>
+    <!-- No fill until hovered: Back, Export decrypted copy. -->
+    <Style Selector="Button.ghost">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Foreground" Value="{StaticResource MutedText}" />
+    </Style>
+    <Style Selector="Button.ghost:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{StaticResource SteelRaised}" />
+      <Setter Property="Foreground" Value="{StaticResource Silver}" />
+    </Style>
+    <Style Selector="Button.ghost:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="Background" Value="{StaticResource SteelHover}" />
+    </Style>
+
+    <!-- ===== Panels ===== -->
+    <!-- A step of the page. A step that isn't unlocked yet is dimmed, and fades in when it unlocks. -->
+    <Style Selector="Border.card">
+      <Setter Property="Background" Value="{StaticResource Steel}" />
+      <Setter Property="BorderBrush" Value="{StaticResource SteelLine}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="12" />
+      <Setter Property="Padding" Value="24,20" />
+      <!-- Light from above: a soft shadow under the panel, not a hard outline. -->
+      <Setter Property="BoxShadow" Value="0 1 2 0 #40000000, 0 12 24 -16 #80000000" />
+      <Setter Property="Transitions">
+        <Transitions>
+          <DoubleTransition Property="Opacity" Duration="0:0:0.25" Easing="CubicEaseOut" />
+        </Transitions>
+      </Setter>
+    </Style>
+    <Style Selector="Border.card:disabled">
+      <Setter Property="Opacity" Value="0.4" />
+    </Style>
+
+    <!-- A sunken area: the "will have" preview. -->
+    <Style Selector="Border.inset">
+      <Setter Property="Background" Value="{StaticResource Iron}" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Padding" Value="16,12" />
+    </Style>
+
+    <Style Selector="Border.badge">
+      <Setter Property="Background" Value="{StaticResource SteelLineStrong}" />
+      <Setter Property="CornerRadius" Value="4" />
+      <Setter Property="Padding" Value="8,2" />
+    </Style>
+
+    <!-- The result line above the action buttons. -->
+    <Style Selector="Border.status">
+      <Setter Property="Background" Value="{StaticResource SteelRaised}" />
+      <Setter Property="BorderBrush" Value="{StaticResource SteelLineStrong}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Padding" Value="12,10" />
+    </Style>
+    <Style Selector="Border.status.success">
+      <Setter Property="Background" Value="{StaticResource SuccessBackground}" />
+      <Setter Property="BorderBrush" Value="{StaticResource SuccessBorder}" />
+    </Style>
+    <Style Selector="Border.status.error">
+      <Setter Property="Background" Value="{StaticResource ErrorBackground}" />
+      <Setter Property="BorderBrush" Value="{StaticResource Crimson}" />
+    </Style>
+
+    <!-- ===== Segmented picker: one choice of a few places (PC / Android / iOS / Save file) ===== -->
+    <Style Selector="Border.segments">
+      <Setter Property="Background" Value="{StaticResource Inset}" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Padding" Value="4" />
+      <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+    <Style Selector="RadioButton.segment">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Foreground" Value="{StaticResource MutedText}" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="MinWidth" Value="80" />
+      <Setter Property="Padding" Value="16,0" />
+      <Setter Property="Cursor" Value="Hand" />
+      <Setter Property="FocusAdorner" Value="{x:Null}" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Name="Pill" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="1" CornerRadius="6" Padding="{TemplateBinding Padding}" Height="32">
+            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                              HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="RadioButton.segment:pointerover">
+      <Setter Property="Foreground" Value="{StaticResource Silver}" />
+    </Style>
+    <Style Selector="RadioButton.segment:checked">
+      <Setter Property="Background" Value="{StaticResource SteelRaised}" />
+      <Setter Property="Foreground" Value="{StaticResource Silver}" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="RadioButton.segment:checked /template/ Border#Pill">
+      <Setter Property="BoxShadow" Value="0 1 3 0 #66000000" />
+    </Style>
+    <Style Selector="RadioButton.segment:focus-visible">
+      <Setter Property="BorderBrush" Value="{StaticResource Crimson}" />
+    </Style>
+    <Style Selector="RadioButton.segment:disabled">
+      <Setter Property="Opacity" Value="0.35" />
+    </Style>
+
+    <!-- ===== Choice rows: an option with a title and a line of help, the whole row clickable ===== -->
+    <Style Selector=":is(ToggleButton).choice">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="8" />
+      <Setter Property="Padding" Value="12,10" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="Cursor" Value="Hand" />
+      <Setter Property="FocusAdorner" Value="{x:Null}" />
+    </Style>
+    <Style Selector=":is(ToggleButton).choice:pointerover">
+      <Setter Property="Background" Value="{StaticResource SteelHover}" />
+    </Style>
+    <Style Selector=":is(ToggleButton).choice:checked">
+      <Setter Property="Background" Value="{StaticResource SteelRaised}" />
+      <Setter Property="BorderBrush" Value="{StaticResource SteelLineStrong}" />
+    </Style>
+    <Style Selector=":is(ToggleButton).choice:focus-visible">
+      <Setter Property="BorderBrush" Value="{StaticResource Crimson}" />
+    </Style>
+    <Style Selector=":is(ToggleButton).choice:disabled">
+      <Setter Property="Opacity" Value="0.4" />
+      <Setter Property="Cursor" Value="Arrow" />
+    </Style>
+
+    <!-- The mark: a crimson dot (one of several) or a crimson box with a check (any number). It grows in when picked.
+         Hover and selection colors change instantly; fading them left the row the pointer just left still lit. -->
+    <Style Selector=":is(ToggleButton).choice /template/ :is(Control)#Mark">
+      <Setter Property="Opacity" Value="0" />
+      <Setter Property="RenderTransform" Value="scale(0.4)" />
+      <Setter Property="Transitions">
+        <Transitions>
+          <DoubleTransition Property="Opacity" Duration="0:0:0.12" />
+          <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15" Easing="CubicEaseOut" />
+        </Transitions>
+      </Setter>
+    </Style>
+    <Style Selector=":is(ToggleButton).choice:checked /template/ :is(Control)#Mark">
+      <Setter Property="Opacity" Value="1" />
+      <Setter Property="RenderTransform" Value="scale(1)" />
+    </Style>
+    <Style Selector=":is(ToggleButton).choice:checked /template/ Border#Box">
+      <Setter Property="BorderBrush" Value="{StaticResource Crimson}" />
+    </Style>
+    <Style Selector="CheckBox.choice:checked /template/ Border#Box">
+      <Setter Property="Background" Value="{StaticResource Crimson}" />
+    </Style>
+
+    <Style Selector="RadioButton.choice">
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}"
+                  Padding="{TemplateBinding Padding}">
+            <Grid ColumnDefinitions="Auto,*">
+              <Border Name="Box" Width="18" Height="18" CornerRadius="9" BorderThickness="1.5"
+                      BorderBrush="{StaticResource MarkBorder}" VerticalAlignment="Center" Margin="0,0,12,0">
+                <Ellipse Name="Mark" Width="8" Height="8" Fill="{StaticResource Crimson}" />
+              </Border>
+              <ContentPresenter Grid.Column="1" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" />
+            </Grid>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="CheckBox.choice">
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}"
+                  Padding="{TemplateBinding Padding}">
+            <Grid ColumnDefinitions="Auto,*">
+              <Border Name="Box" Width="18" Height="18" CornerRadius="5" BorderThickness="1.5"
+                      BorderBrush="{StaticResource MarkBorder}" VerticalAlignment="Center" Margin="0,0,12,0">
+                <Path Name="Mark" Data="M1.5,6.25 L4.75,9.5 L10.5,3" Width="12" Height="12" Stretch="None" Stroke="White" StrokeThickness="2"
+                      StrokeLineCap="Round" StrokeJoin="Round" HorizontalAlignment="Center" VerticalAlignment="Center" />
+              </Border>
+              <ContentPresenter Grid.Column="1" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" />
+            </Grid>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+
+    <!-- ===== Motion that answers an action ===== -->
+    <!-- A panel that opens under a choice slides into place. -->
+    <Style Selector="StackPanel.reveal[IsVisible=True]">
+      <Style.Animations>
+        <Animation Duration="0:0:0.2" Easing="CubicEaseOut" FillMode="Backward">
+          <KeyFrame Cue="0%">
+            <Setter Property="Opacity" Value="0" />
+            <Setter Property="TranslateTransform.Y" Value="-6" />
+          </KeyFrame>
+          <KeyFrame Cue="100%">
+            <Setter Property="Opacity" Value="1" />
+            <Setter Property="TranslateTransform.Y" Value="0" />
+          </KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+    <Style Selector="TextBlock.warning[IsVisible=True]">
+      <Style.Animations>
+        <Animation Duration="0:0:0.2" FillMode="Backward">
+          <KeyFrame Cue="0%"><Setter Property="Opacity" Value="0" /></KeyFrame>
+          <KeyFrame Cue="100%"><Setter Property="Opacity" Value="1" /></KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+    <!-- A result rises in, so a finished run is noticed. -->
+    <Style Selector="Border.status.success, Border.status.error">
+      <Style.Animations>
+        <Animation Duration="0:0:0.28" Easing="CubicEaseOut" FillMode="Backward">
+          <KeyFrame Cue="0%">
+            <Setter Property="Opacity" Value="0" />
+            <Setter Property="TranslateTransform.Y" Value="8" />
+          </KeyFrame>
+          <KeyFrame Cue="100%">
+            <Setter Property="Opacity" Value="1" />
+            <Setter Property="TranslateTransform.Y" Value="0" />
+          </KeyFrame>
+        </Animation>
+      </Style.Animations>
+    </Style>
+  </Application.Styles>
+</Application>

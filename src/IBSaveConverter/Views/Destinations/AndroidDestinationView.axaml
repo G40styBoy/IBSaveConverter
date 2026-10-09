@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:IBSaveConverter.ViewModels.Destinations"
+             x:Class="IBSaveConverter.Views.Destinations.AndroidDestinationView"
+             x:DataType="vm:AndroidDestinationViewModel">
+  <StackPanel Spacing="12">
+    <TextBlock Classes="hint"
+               Text="The Android game loads one file with all of your characters in it. Loading this file replaces what's on the phone now." />
+
+    <StackPanel Spacing="4">
+      <RadioButton Classes="choice" GroupName="androidMode" IsChecked="{Binding IsNewSave}">
+        <StackPanel Spacing="2">
+          <TextBlock Classes="strong" Text="Start a new Android save" />
+          <TextBlock Classes="hint" Text="Holds only the characters you picked." />
+        </StackPanel>
+      </RadioButton>
+      <RadioButton Classes="choice" GroupName="androidMode" IsChecked="{Binding IsAddToExisting}">
+        <StackPanel Spacing="2">
+          <TextBlock Classes="strong" Text="Add to an Android save I already have" />
+          <TextBlock Classes="hint" Text="Keeps its characters. Pick the zip you exported from the phone." />
+        </StackPanel>
+      </RadioButton>
+      <StackPanel Classes="reveal" Spacing="8" Margin="42,4,0,8" IsVisible="{Binding IsAddToExisting}">
+        <Grid ColumnDefinitions="*,Auto">
+          <TextBox Grid.Column="0" Text="{Binding ExistingPath, UpdateSourceTrigger=LostFocus}" Watermark="The zip the Android game exported" />
+          <Button Grid.Column="1" Content="Browse…" Command="{Binding BrowseExistingCommand}" Margin="8,0,0,0" />
+        </Grid>
+        <TextBlock Classes="warning" Text="{Binding ExistingNote}" IsVisible="{Binding HasExistingNote}" />
+      </StackPanel>
+    </StackPanel>
+
+    <StackPanel Spacing="8">
+      <TextBlock Classes="strong" Text="Save as" />
+      <Grid ColumnDefinitions="*,Auto">
+        <TextBox Grid.Column="0" Text="{Binding OutputZip}" Watermark="Where to save the Android zip" />
+        <Button Grid.Column="1" Content="Browse…" Command="{Binding BrowseOutputCommand}" Margin="8,0,0,0" />
+      </Grid>
+    </StackPanel>
+  </StackPanel>
+</UserControl>

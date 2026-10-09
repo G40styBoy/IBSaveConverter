@@ -1,0 +1,26 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:IBSaveConverter.ViewModels"
+        xmlns:v="using:IBSaveConverter.Views"
+        xmlns:anim="using:IBSaveConverter.Views.Animations"
+        mc:Ignorable="d" d:DesignWidth="780" d:DesignHeight="900"
+        x:Class="IBSaveConverter.Views.MainWindow"
+        x:DataType="vm:ShellViewModel"
+        Title="Infinity Blade Save Converter"
+        Background="{StaticResource Iron}"
+        Width="780" Height="900" MinWidth="600" MinHeight="600"
+        WindowStartupLocation="CenterScreen">
+
+  <Window.DataTemplates>
+    <DataTemplate DataType="vm:StartMenuViewModel"><v:StartMenuView /></DataTemplate>
+    <DataTemplate DataType="vm:ConverterPageViewModel"><v:ConverterPageView /></DataTemplate>
+  </Window.DataTemplates>
+
+  <TransitioningContentControl Content="{Binding CurrentPage}">
+    <TransitioningContentControl.PageTransition>
+      <anim:FadeRiseTransition />
+    </TransitioningContentControl.PageTransition>
+  </TransitioningContentControl>
+</Window>

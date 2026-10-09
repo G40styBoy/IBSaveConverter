@@ -1,0 +1,10 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:IBSaveConverter.ViewModels.Sources"
+             x:Class="IBSaveConverter.Views.Sources.SaveFileSourceView"
+             x:DataType="vm:SaveFileSourceViewModel">
+  <StackPanel Orientation="Horizontal" Spacing="16">
+    <Button Content="Add save file…" Command="{Binding AddFileCommand}" />
+    <TextBlock Classes="hint" VerticalAlignment="Center" Text="{Binding Hint}" />
+  </StackPanel>
+</UserControl>

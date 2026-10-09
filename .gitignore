@@ -429,3 +429,6 @@ FodyWeavers.xsd
 
 publish.bat
 icon.ico
+
+# iOS backup helper (Python)
+__pycache__/

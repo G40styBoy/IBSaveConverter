@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:IBSaveConverter.ViewModels.Destinations"
+             x:Class="IBSaveConverter.Views.Destinations.IosDestinationView"
+             x:DataType="vm:IosDestinationViewModel">
+  <StackPanel Spacing="12">
+    <TextBlock Classes="hint"
+               Text="Makes the game's SAVE folder. Copy it onto the device in place of the game's SAVE folder." />
+
+    <StackPanel Spacing="4">
+      <RadioButton Classes="choice" GroupName="iosMode" IsChecked="{Binding IsNewSave}">
+        <StackPanel Spacing="2">
+          <TextBlock Classes="strong" Text="Make a new iOS save" />
+          <TextBlock Classes="hint" Text="Holds only the characters you picked." />
+        </StackPanel>
+      </RadioButton>
+      <StackPanel Classes="reveal" Spacing="8" Margin="42,4,0,8" IsVisible="{Binding IsNewSave}">
+        <Grid ColumnDefinitions="*,Auto">
+          <TextBox Grid.Column="0" Text="{Binding OutputFolder, UpdateSourceTrigger=LostFocus}" Watermark="Where to make the SAVE folder" />
+          <Button Grid.Column="1" Content="Browse…" Command="{Binding BrowseOutputCommand}" Margin="8,0,0,0" />
+        </Grid>
+        <TextBlock Classes="warning" Text="{Binding OutputNote}" IsVisible="{Binding HasOutputNote}" />
+      </StackPanel>
+
+      <RadioButton Classes="choice" GroupName="iosMode" IsChecked="{Binding IsAddToExisting}">
+        <StackPanel Spacing="2">
+          <TextBlock Classes="strong" Text="Add to an iOS save I already have" />
+          <TextBlock Classes="hint" Text="Keeps its characters. Pick the SAVE folder copied off the device." />
+        </StackPanel>
+      </RadioButton>
+      <StackPanel Classes="reveal" Spacing="8" Margin="42,4,0,8" IsVisible="{Binding IsAddToExisting}">
+        <Grid ColumnDefinitions="*,Auto">
+          <TextBox Grid.Column="0" Text="{Binding ExistingPath, UpdateSourceTrigger=LostFocus}" Watermark="The game's SAVE folder, copied off the device" />
+          <Button Grid.Column="1" Content="Browse…" Command="{Binding BrowseExistingCommand}" Margin="8,0,0,0" />
+        </Grid>
+        <TextBlock Classes="warning" Text="{Binding ExistingNote}" IsVisible="{Binding HasExistingNote}" />
+      </StackPanel>
+    </StackPanel>
+
+    <StackPanel Spacing="4">
+      <CheckBox Classes="choice" IsChecked="{Binding UseDeviceKey}">
+        <StackPanel Spacing="2">
+          <TextBlock Classes="strong" Text="Use the device's own key" />
+          <TextBlock Classes="hint" Text="Only for a game without the fixed-key patch. Leave it off for a patched game." />
+        </StackPanel>
+      </CheckBox>
+      <StackPanel Classes="reveal" Spacing="8" Margin="42,4,0,0" IsVisible="{Binding UseDeviceKey}">
+        <TextBox Text="{Binding DeviceKey, UpdateSourceTrigger=LostFocus}" Classes="mono"
+                 Watermark="Device key, like 1B3E0000-0000-4000-8000-00000000C0DE" />
+        <TextBlock Classes="warning" Text="{Binding DeviceKeyNote}" IsVisible="{Binding HasDeviceKeyNote}" />
+      </StackPanel>
+    </StackPanel>
+  </StackPanel>
+</UserControl>

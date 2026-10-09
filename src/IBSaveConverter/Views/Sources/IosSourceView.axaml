@@ -1,0 +1,52 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:IBSaveConverter.ViewModels.Sources"
+             x:Class="IBSaveConverter.Views.Sources.IosSourceView"
+             x:DataType="vm:IosSourceViewModel">
+  <StackPanel Spacing="12">
+    <Grid ColumnDefinitions="*,Auto">
+      <TextBox Grid.Column="0" Text="{Binding SaveFolder, UpdateSourceTrigger=LostFocus}" Watermark="The game's SAVE folder, copied off the device" />
+      <Button Grid.Column="1" Content="Browse…" Command="{Binding BrowseSaveFolderCommand}" Margin="8,0,0,0" />
+    </Grid>
+
+    <TextBlock Classes="hint" IsVisible="{Binding UsesFixedKey}" Text="This save uses the fixed key, so no device key is needed." />
+    <Grid ColumnDefinitions="Auto,*,Auto" IsVisible="{Binding HasFoundDeviceId}">
+      <TextBlock Grid.Column="0" Text="{Binding FoundText}" Classes="muted" VerticalAlignment="Center" Margin="0,0,8,0" />
+      <SelectableTextBlock Grid.Column="1" Text="{Binding FoundDeviceId}" Classes="mono" VerticalAlignment="Center" />
+      <Button Grid.Column="2" Classes="small" Content="Copy" Command="{Binding CopyDeviceIdCommand}" />
+    </Grid>
+
+    <!-- Only for a legacy save locked to its device. -->
+    <StackPanel Classes="reveal" Spacing="4" IsVisible="{Binding NeedsDeviceKey}">
+      <TextBlock Classes="strong" Text="Device key" Margin="0,4,0,4" />
+      <RadioButton Classes="choice" GroupName="iosSource" IsChecked="{Binding IsFromBackup}">
+        <StackPanel Spacing="2">
+          <TextBlock Classes="strong" Text="Find it in an encrypted backup of the device" />
+          <TextBlock Classes="hint"
+                     Text="Back up the device with Finder, iTunes, Apple Devices or iMazing with &quot;Encrypt local backup&quot; turned on. Only an encrypted backup holds the key." />
+        </StackPanel>
+      </RadioButton>
+      <StackPanel Classes="reveal" Spacing="8" Margin="42,4,0,8" IsVisible="{Binding IsFromBackup}">
+        <Grid ColumnDefinitions="*,Auto">
+          <TextBox Grid.Column="0" Text="{Binding BackupFolder, UpdateSourceTrigger=LostFocus}" Watermark="The backup folder (MobileSync\Backup\…)" />
+          <Button Grid.Column="1" Content="Browse…" Command="{Binding BrowseBackupCommand}" Margin="8,0,0,0" />
+        </Grid>
+        <Grid ColumnDefinitions="*,Auto">
+          <TextBox Grid.Column="0" Text="{Binding Password}" PasswordChar="•" Watermark="Backup password" />
+          <Button Grid.Column="1" Classes="accent" Content="Read backup" Command="{Binding ReadBackupCommand}" Margin="8,0,0,0" />
+        </Grid>
+      </StackPanel>
+
+      <RadioButton Classes="choice" GroupName="iosSource" IsChecked="{Binding IsFromDeviceId}">
+        <StackPanel Spacing="2">
+          <TextBlock Classes="strong" Text="I know the device key" />
+          <TextBlock Classes="hint" Text="The key shown after an earlier backup was read." />
+        </StackPanel>
+      </RadioButton>
+      <StackPanel Classes="reveal" Margin="42,4,0,0" IsVisible="{Binding IsFromDeviceId}">
+        <TextBox Text="{Binding DeviceId, UpdateSourceTrigger=LostFocus}" Classes="mono"
+                 Watermark="Device key, like 1B3E0000-0000-4000-8000-00000000C0DE" />
+      </StackPanel>
+    </StackPanel>
+  </StackPanel>
+</UserControl>

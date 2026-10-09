@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <!-- The game icons, and Cinzel (SIL Open Font License, see Assets\Fonts\Cinzel-OFL.txt) for the big titles. -->
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\*.png" />
+    <AvaloniaResource Include="Assets\Fonts\*.ttf" />
+  </ItemGroup>
+
+  <!-- For build.bat: packs the native graphics DLLs into the single-file exe. -->
+  <PropertyGroup>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+  </PropertyGroup>
+
+  <!-- Smaller published exe. These only apply to a publish, not to a normal build.
+       Compression is always on. Trimming drops the parts of .NET and Avalonia the app never calls;
+       build.bat notrim turns it off if a trimmed exe ever misbehaves. -->
+  <PropertyGroup>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <PublishTrimmed Condition="'$(Trim)' != 'false'">true</PublishTrimmed>
+    <!-- Trimming turns reflection JSON off by default; AppSettings (settings.json) needs it. -->
+    <JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>
+    <EventSourceSupport>false</EventSourceSupport>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.6" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.6" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.6" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.6" />
+    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.6">
+      <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+      <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!-- The iOS backup helper. build.bat freezes it into iOSBackup.exe, which ships next to the app.
+       Without the exe, the script ships instead and needs Python on the PC that runs it. -->
+  <PropertyGroup>
+    <IosHelperExe>$(MSBuildThisFileDirectory)..\..\artifacts\ios-helper\iOSBackup.exe</IosHelperExe>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(IosHelperExe)" Link="iOSBackup.exe" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true"
+          Condition="Exists('$(IosHelperExe)')" />
+    <None Include="..\..\tools\ios-backup\iOSBackup.py" Link="iOSBackup.py" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true"
+          Condition="!Exists('$(IosHelperExe)')" />
+  </ItemGroup>
+
+</Project>

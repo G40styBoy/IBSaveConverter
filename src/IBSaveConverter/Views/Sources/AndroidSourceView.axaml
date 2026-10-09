@@ -1,0 +1,10 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:IBSaveConverter.ViewModels.Sources"
+             x:Class="IBSaveConverter.Views.Sources.AndroidSourceView"
+             x:DataType="vm:AndroidSourceViewModel">
+  <Grid ColumnDefinitions="*,Auto">
+    <TextBox Grid.Column="0" Text="{Binding ZipPath, UpdateSourceTrigger=LostFocus}" Watermark="The zip the Android game exported" />
+    <Button Grid.Column="1" Content="Browse…" Command="{Binding BrowseCommand}" Margin="8,0,0,0" />
+  </Grid>
+</UserControl>

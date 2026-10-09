@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:IBSaveConverter.ViewModels.Destinations"
+             x:Class="IBSaveConverter.Views.Destinations.PcDestinationView"
+             x:DataType="vm:PcDestinationViewModel">
+  <StackPanel Spacing="12">
+    <StackPanel Spacing="8">
+      <Grid ColumnDefinitions="*,Auto">
+        <TextBox Grid.Column="0" Text="{Binding Folder, UpdateSourceTrigger=LostFocus}" Watermark="{Binding FolderHint}" />
+        <Button Grid.Column="1" Content="Browse…" Command="{Binding BrowseCommand}" Margin="8,0,0,0" />
+      </Grid>
+      <TextBlock Classes="hint" Text="{Binding Note}" IsVisible="{Binding HasNote}" />
+    </StackPanel>
+
+    <StackPanel Spacing="4">
+      <RadioButton Classes="choice" GroupName="pcMode" IsChecked="{Binding IsAdd}">
+        <StackPanel Spacing="2">
+          <TextBlock Classes="strong" Text="Add to the characters on this PC" />
+          <TextBlock Classes="hint" Text="The other characters on this PC stay." />
+        </StackPanel>
+      </RadioButton>
+      <StackPanel Classes="reveal" Spacing="8" Margin="42,4,0,8" IsVisible="{Binding ShowTargetPicker}">
+        <TextBlock Classes="strong" Text="Put it in" />
+        <ComboBox ItemsSource="{Binding TargetSlots}" SelectedItem="{Binding SelectedTarget}"
+                  HorizontalAlignment="Stretch" PlaceholderText="Choose a PC slot" />
+      </StackPanel>
+      <RadioButton Classes="choice" GroupName="pcMode" IsChecked="{Binding IsReplace}">
+        <StackPanel Spacing="2">
+          <TextBlock Classes="strong" Text="Replace the characters on this PC" />
+          <TextBlock Classes="hint" Text="This PC ends up with only the characters you picked." />
+        </StackPanel>
+      </RadioButton>
+    </StackPanel>
+
+    <TextBlock Classes="warning" Text="{Binding Notice}" IsVisible="{Binding HasNotice}" />
+    <TextBlock Classes="hint" Text="{Binding CloseGameNote}" />
+  </StackPanel>
+</UserControl>

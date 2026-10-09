@@ -1,0 +1,6 @@
+<Project>
+  <!-- Every build output (bin, obj, publish) goes to artifacts\ at the repo root, so src\ only holds source. -->
+  <PropertyGroup>
+    <UseArtifactsOutput>true</UseArtifactsOutput>
+  </PropertyGroup>
+</Project>
