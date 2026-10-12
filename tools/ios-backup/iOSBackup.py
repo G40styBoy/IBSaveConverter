@@ -72,7 +72,7 @@ def main() -> int:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser = argparse.ArgumentParser(description="Reads the Infinity Blade III save keys out of an encrypted iOS backup.")
     parser.add_argument("--backup", required=True, help="the backup folder (holds Manifest.plist)")
     parser.add_argument("--out", required=True, help="where to write the game's SAVE files, if the backup has them")
     return parser.parse_args()
