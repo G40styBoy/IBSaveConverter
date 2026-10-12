@@ -95,7 +95,7 @@ public sealed partial class MobileSave : ISaveSet
         if (!File.Exists(cachePath))
             throw new FileNotFoundException("No LocalFileHeaderCache in this folder. Is it the game's SAVE folder?", cachePath);
 
-        var names = Directory.EnumerateFiles(folder).Select(p => Path.GetFileName(p)).ToList();
+        var names = Directory.EnumerateFiles(folder).Select(p => Path.GetFileName(p)).OrderBy(n => n, StringComparer.Ordinal).ToList(); // same order on every system
 
         // The ID in front of the file names is the account ID, not the device ID. It costs nothing to try it as well.
         var candidates = new List<string?> { null };
@@ -112,8 +112,12 @@ public sealed partial class MobileSave : ISaveSet
         var byPlainName = new Dictionary<string, string>(StringComparer.Ordinal);
         foreach (string name in fileNames.OrderBy(n => n == CloudFiles.PlainName(n) ? 0 : 1))
             byPlainName.TryAdd(CloudFiles.PlainName(name), name);
+        var stored = new HashSet<string>(fileNames, StringComparer.Ordinal);
+        // A folder can hold files for more than one account ID, so the exact name comes first. Only when it isn't
+        // there (a save from another account ID) is the file found by its plain name.
         byte[]? ReadFile(string name) =>
-            byPlainName.TryGetValue(CloudFiles.PlainName(name), out string? stored) ? readStoredFile(stored) : null;
+            stored.Contains(name) ? readStoredFile(name)
+            : byPlainName.TryGetValue(CloudFiles.PlainName(name), out string? other) ? readStoredFile(other) : null;
 
         var (deviceId, key) = FindKey(cacheFile, deviceIds);
         try
@@ -164,8 +168,8 @@ public sealed partial class MobileSave : ISaveSet
         catch (InvalidDataException fallbackError)
         {
             throw new InvalidDataException(
-                "LocalFileHeaderCache is damaged or cut short, and the save files could not be read without it: " +
-                fallbackError.Message, firstError);
+                $"LocalFileHeaderCache could not be read ({firstError?.Message ?? "unknown error"}), " +
+                $"and the save files could not be read without it: {fallbackError.Message}", firstError);
         }
     }
 

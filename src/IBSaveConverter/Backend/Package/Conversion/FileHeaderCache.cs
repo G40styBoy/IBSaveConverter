@@ -5,8 +5,8 @@ namespace IBSaveEditor.Package.Conversion;
 
 internal sealed class CacheEntry
 {
-    /// <summary>Mobile only. Meaning unknown; always 0.</summary>
-    public int MobileValueA { get; set; }
+    /// <summary>Mobile only. The account ID, the same as in front of the file name. Empty unless the player signed in.</summary>
+    public string McpId { get; set; } = string.Empty;
 
     /// <summary>Mobile only. Meaning unknown; 0 on _SwordSave* files, 1 on the rest.</summary>
     public int MobileValueB { get; set; }
@@ -25,7 +25,7 @@ internal sealed class CacheEntry
 ///   int32 version (2), FString LastMcpId, the cached remote file list, the local file list.
 ///   Each list is an int32 count, then the entries.
 ///   PC entry:     FString sha1, FString path, FString name, int64 size
-///   Mobile entry: int32 A, int32 B, then the same four fields
+///   Mobile entry: FString McpId, int32 B, then the same four fields
 /// Hash and size cover the decrypted payload, which is still dpiZ compressed on mobile.
 /// LastMcpId is the player's online account ID. It is empty unless they signed in, and then the game also puts it
 /// in front of every file name. The remote list has always been empty in real files; it is read with the entry
@@ -81,7 +81,7 @@ internal sealed class FileHeaderCache
             var entry = new CacheEntry();
             if (platform is CloudPlatform.Mobile)
             {
-                entry.MobileValueA = reader.ReadInt32();
+                entry.McpId = reader.DeserializeString();
                 entry.MobileValueB = reader.ReadInt32();
             }
             entry.Hash = reader.DeserializeString();
@@ -100,7 +100,7 @@ internal sealed class FileHeaderCache
         {
             if (Platform is CloudPlatform.Mobile)
             {
-                writer.Write(entry.MobileValueA);
+                writer.WriteUnrealString(entry.McpId);
                 writer.Write(entry.MobileValueB);
             }
             writer.WriteUnrealString(entry.Hash);
@@ -152,7 +152,7 @@ internal sealed class FileHeaderCache
             {
                 Path = (Platform is CloudPlatform.PC ? PC_PATH_PREFIX : MOBILE_PATH_PREFIX) + McpId + fileName,
                 Name = fileName.TrimStart('_'),
-                MobileValueA = 0,
+                McpId = this.McpId,
                 MobileValueB = fileName.StartsWith("_SwordSave", StringComparison.Ordinal) ? 0 : 1,
             };
             Entries.Add(entry);
